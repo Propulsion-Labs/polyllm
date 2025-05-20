@@ -1,6 +1,6 @@
 {
   "name": "polyllm",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A model agnostic library for interacting with LLMs using a minimal abstraction layer",
   "scripts": {
     "build": "rollup -c"
@@ -21,14 +21,17 @@
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
     },
     "./agents": {
       "import": "./dist/agents/index.mjs",
-      "require": "./dist/agents/index.cjs"
+      "require": "./dist/agents/index.cjs",
+      "types": "./dist/agents/index.d.ts"
     }
   },
   "dependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "openai": "^4.100.0"
   }
 }
