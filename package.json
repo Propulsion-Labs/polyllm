@@ -1,5 +1,5 @@
 {
-  "name": "pl-ai-library",
+  "name": "polyllm",
   "version": "1.0.0",
   "description": "A model agnostic library for interacting with LLMs using a minimal abstraction layer",
   "scripts": {
