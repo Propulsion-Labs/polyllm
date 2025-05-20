@@ -5,8 +5,8 @@
   "scripts": {
     "build": "rollup -c"
   },
-  "author": "Rudy Soliz",
-  "license": "",
+  "author": "Propulsion Labs",
+  "license": "GPL-3.0-only",
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/node": "^22.15.19",
