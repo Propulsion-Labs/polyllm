@@ -1,12 +1,12 @@
 {
   "name": "pl-ai-library",
   "version": "1.0.0",
-  "description": "A model agnostic library for interacting with LLMs with a minimal abstraction layer",
+  "description": "A model agnostic library for interacting with LLMs using a minimal abstraction layer",
   "scripts": {
     "build": "rollup -c"
   },
   "author": "Rudy Soliz",
-  "license": "Rights Reserved",
+  "license": "",
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/node": "^22.15.19",
