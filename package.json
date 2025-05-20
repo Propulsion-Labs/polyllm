@@ -1,12 +1,12 @@
 {
   "name": "polyllm",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "A model agnostic library for interacting with LLMs using a minimal abstraction layer",
   "scripts": {
     "build": "rollup -c"
   },
   "author": "Propulsion Labs",
-  "license": "GPL-3.0-only",
+  "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/node": "^22.15.19",
@@ -23,11 +23,6 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
-    },
-    "./agents": {
-      "import": "./dist/agents/index.mjs",
-      "require": "./dist/agents/index.cjs",
-      "types": "./dist/agents/index.d.ts"
     }
   },
   "dependencies": {

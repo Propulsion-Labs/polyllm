@@ -1,53 +1,35 @@
-import typescript from "@rollup/plugin-typescript";
-import dts from "rollup-plugin-dts";
-import resolve from "@rollup/plugin-node-resolve";
-
-const input = ["src/index.ts", "src/agents/index.ts"];
+import typescript from '@rollup/plugin-typescript';
+import dts from 'rollup-plugin-dts';
 
 export default [
-  // ESM build (.mjs)
+  // ESM
   {
-    input,
+    input: 'src/index.ts',
     output: {
-      dir: "dist",
-      format: "esm",
-      preserveModules: true,
-      entryFileNames: "[name].mjs",
+      file: 'dist/index.mjs',
+      format: 'esm',
     },
-    plugins: [
-      typescript({ tsconfig: "./tsconfig.json", module: "ESNext" }),
-      resolve({
-        extensions: [".js", ".ts"],
-      }),
-    ],
-    external: ["openai"],
+    plugins: [typescript({ tsconfig: './tsconfig.json', module: 'ESNext' })],
+    external: ['openai'],
   },
 
-  // CJS build (.cjs)
+  // CJS
   {
-    input,
+    input: 'src/index.ts',
     output: {
-      dir: "dist",
-      format: "cjs",
-      preserveModules: true,
-      entryFileNames: "[name].cjs",
+      file: 'dist/index.cjs',
+      format: 'cjs',
     },
-    plugins: [
-      typescript({ tsconfig: "./tsconfig.json", module: "ESNext" }),
-      resolve({
-        extensions: [".js", ".ts"],
-      }),
-    ],
-    external: ["openai"],
+    plugins: [typescript({ tsconfig: './tsconfig.json', module: 'ESNext' })],
+    external: ['openai'],
   },
 
-  // .d.ts build
+  // Types
   {
-    input,
+    input: 'src/index.ts',
     output: {
-      dir: "dist",
-      preserveModules: true,
-      entryFileNames: "[name].d.ts",
+      file: 'dist/index.d.ts',
+      format: 'es',
     },
     plugins: [dts()],
   },

@@ -33,7 +33,7 @@ export class Action {
   // deno-lint-ignore no-explicit-any
   jsonSchema?: { [key: string]: any };
   // deno-lint-ignore no-explicit-any
-  fn: (params: { [key: string]: any }, manager: AiManager<any>) => Promise<string | void>;
+  fn: (params: any, manager: AiManager<any>) => Promise<string | void>;
 
   /**
    * @param name The name of the action, preferably use snake_case

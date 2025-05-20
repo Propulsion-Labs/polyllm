@@ -57,6 +57,17 @@ export interface ActionMessageResponse {
     uuid: string;
 }
 
+export interface FileAttachmentBase64 {
+    type: 'file_b64';
+    base64: string;
+    file_name: string;
+}
+
+// export interface FileAttachmentLink {
+//     type: 'file_link';
+//     link: string;
+// }
+
 export function ofChatMessage(role: Role, content?: string, actions?: AiActionCall[]): ChatMessage {
     return {
         type: "chat",
@@ -77,4 +88,12 @@ export function ofActionMessageResponse(
     };
 }
 
-export type Message = ChatMessage | ActionMessageResponse;
+export function ofFileAttachment(file_name: string, base64: string): FileAttachmentBase64 {
+    return {
+        type: 'file_b64',
+        file_name,
+        base64
+    }
+}
+ 
+export type Message = ChatMessage | ActionMessageResponse | FileAttachmentBase64 /*| FileAttachmentLink*/;

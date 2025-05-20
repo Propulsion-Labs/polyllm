@@ -50,7 +50,7 @@ export class AzureOpenAIAgentType
 
   override async prompt(
     messageChain: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
-    stream: ReadableStreamDefaultController<Uint8Array> | null,
+    stream?: ReadableStreamDefaultController<Uint8Array>,
   ): Promise<AiResponse> {
     const res = await this.client.chat.completions.create({
       messages: messageChain,
@@ -179,12 +179,14 @@ export class AzureOpenAIAgentType
           }))
           : undefined,
       };
-    } else {
+    } else if(message.type === 'action_response') {
       return {
         role: "tool",
         tool_call_id: message.uuid,
         content: message.result,
       };
+    }else {
+      throw new Error("message type is not supported.")
     }
   }
 

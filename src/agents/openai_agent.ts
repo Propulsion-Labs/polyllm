@@ -1,7 +1,7 @@
 /**
  * @file openai_agent.ts
  * 
-  * MIT License
+ * MIT License
  * 
  * Copyright (c) 2025 Propulsion Labs, LLC
  * 
@@ -28,8 +28,6 @@ import { AiAgentType } from "../agent";
 import OpenAI from "openai";
 import { type AiResponse, FinishReason, type Message, Role } from "../messages";
 
-
-
 export class OpenAIAgentType
   extends AiAgentType<OpenAI.Chat.Completions.ChatCompletionMessageParam> {
   model: string;
@@ -45,7 +43,7 @@ export class OpenAIAgentType
 
   override async prompt(
     messageChain: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
-    stream: ReadableStreamDefaultController<Uint8Array> | null,
+    stream?: ReadableStreamDefaultController<Uint8Array>,
   ): Promise<AiResponse> {
     const res = await this.client.chat.completions.create({
       messages: messageChain,
@@ -171,12 +169,27 @@ export class OpenAIAgentType
           }))
           : undefined,
       };
-    } else {
+    } else if(message.type === 'action_response') {
       return {
         role: "tool",
         tool_call_id: message.uuid,
         content: message.result,
       };
+    }else if(message.type === 'file_b64') {
+      return {
+        role: 'user',
+        content: [
+          {
+            type: 'file',
+            file: {
+              file_data: message.base64,
+              filename: message.file_name
+            }
+          }
+        ]
+      }
+    }else {
+      throw new Error("unsupported message type given to openai agent.")
     }
   }
 

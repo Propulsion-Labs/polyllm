@@ -40,7 +40,7 @@ export class AiManager<T> {
   messages: T[];
   stream: ReadableStreamDefaultController<Uint8Array> | null = null;
 
-  constructor(agent: AiAgentType<T>, messages: Message[]) {
+  constructor(agent: AiAgentType<T>, messages: Message[]=[]) {
     this.agent = agent;
     this.messages = messages.map(this.agent.fromMessage);
   }
@@ -50,7 +50,7 @@ export class AiManager<T> {
 
     for(let i = 0; i < 10; i++) {
       try {
-        const response = await this.agent.prompt(this.messages, this.stream);
+        const response = await this.agent.prompt(this.messages, this.stream ?? undefined);
         this.addMessage(
           ofChatMessage(Role.Assistant, response.message, response.actions),
         );
