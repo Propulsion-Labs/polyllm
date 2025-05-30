@@ -25,7 +25,9 @@
  * 
  */
 
+import { ZodTypeAny, z } from "zod";
 import type { AiManager } from "./manager";
+import { zodToJsonSchema } from 'zod-to-json-schema';
 
 export class Action {
   name: string;
@@ -33,7 +35,7 @@ export class Action {
   // deno-lint-ignore no-explicit-any
   jsonSchema?: { [key: string]: any };
   // deno-lint-ignore no-explicit-any
-  fn: (params: any, manager: AiManager<any>) => Promise<string | void>;
+  fn: (params: any, manager: AiManager<any>) => (Promise<string | void> | string | void);
 
   /**
    * @param name The name of the action, preferably use snake_case
@@ -44,7 +46,7 @@ export class Action {
     name: string,
     description: string,
     // deno-lint-ignore no-explicit-any
-    fn: (params: { [key: string]: any }, manager: AiManager<any>) => Promise<string | void>,
+    fn: (params: { [key: string]: any }, manager: AiManager<any>) => (Promise<string | void> | string | void),
     // deno-lint-ignore no-explicit-any
     jsonSchema?: { [key: string]: any },
   ) {
@@ -52,6 +54,21 @@ export class Action {
     this.description = description;
     this.fn = fn;
     this.jsonSchema = jsonSchema;
+  }
+}
+
+export class ZodAction<T extends ZodTypeAny> extends Action {
+  zodSchema: T;
+
+  constructor(
+    name: string,
+    description: string,
+    zodSchema: T,
+    fn: (params: z.infer<typeof zodSchema>, manager: AiManager<any>) =>  (Promise<string | void> | string | void),
+  ) {
+    super(name, description, fn, zodToJsonSchema(zodSchema));
+    this.zodSchema = zodSchema;
+    this.fn = fn;
   }
 }
 
@@ -64,7 +81,22 @@ export class ActionManager {
     if (!action) {
       throw new Error(`Action ${name} not found`);
     }
-    return action.fn(params, manager);
+    let parameters = params;
+    if(action instanceof ZodAction) {
+      // preform some extra type validation
+      const result = action.zodSchema.safeParse(params);
+      if (!result.success) {
+        return Promise.resolve(
+          `Action ${name} failed validation: ${result.error.message}`
+        )
+      }
+      parameters = result.data;
+    }
+    const res = action.fn(parameters, manager);
+    if(res instanceof Promise) {
+      return res;
+    }
+    return Promise.resolve(res);
   }
 
   addAction(action: Action) {

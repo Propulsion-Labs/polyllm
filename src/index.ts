@@ -36,6 +36,6 @@ export {
     Role,
 } from "./messages";
 export { AiManager } from "./manager";
-export { Action, EphemeralActionContext } from "./action_manager";
+export { Action, ZodAction, EphemeralActionContext } from "./action_manager";
 export { AiAgentType } from "./agent";
 export * from "./agents/index";

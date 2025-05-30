@@ -119,7 +119,6 @@ export class OpenAIAgentType
     for (const tc of Object.values(tool_calls)) {
       try {
         const json = JSON.parse(tc.arguments ?? "{}");
-        console.log("jsonned", json, tc)
         response.actions.push({
           uuid: tc.id ?? "",
           action: tc.name ?? "",
